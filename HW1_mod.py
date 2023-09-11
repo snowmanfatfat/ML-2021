@@ -1,8 +1,8 @@
 # 資料集解釋:delphi對美國40個州每天在fb上進行Covid-19抽樣調查，從2020/04開始共進行67~68天(所以每一個州1的總數是67或68個)，問卷包含有無covid-19相關症狀、陽性與否、有無戴口罩、自覺心理健康程度等，最後推估該州可能有多少百分比的人擁有那些屬性，我們使用的資料的各項屬性即為delphi最後的推估結果
 # 任務目標:依照每個州過去3天的調查結果以及過去兩天的陽性比例 推估 第三天該州的陽性比例 (所以資料會重複，某一列第二天的資料即是下一列第一天的資料)
 
-tr_path = 'covid.train.csv'
-tt_path = 'covid.test.csv'
+tr_path = 'HW1/covid.train.csv'
+tt_path = 'HW1/covid.test.csv'
 
 import torch
 import torch.nn as nn
@@ -216,7 +216,7 @@ config = {
     },
     'early_stop': 500,               
     "lambda_L2": 0.001,
-    'save_path': 'models/model.pth',
+    'save_path': 'HW1/models/model.pth',
     "target_only": True,
     "test_size":0.2
 }
@@ -259,7 +259,7 @@ def plot_pred(dv_set, model, device, lim=35., preds=None, targets=None):
     plt.show()
 
 device = get_device()                
-os.makedirs('models', exist_ok=True)
+os.makedirs('HW1/models', exist_ok=True)
 
 tr_set, tr_mean, tr_std = prep_dataloader(tr_path,'train', config['batch_size'], target_only=config["target_only"])
 dv_set, mean_none, std_none = prep_dataloader(tr_path, 'dev', config['batch_size'], target_only=config["target_only"], mean=tr_mean, std=tr_std)
@@ -285,4 +285,4 @@ def save_pred(preds, file):
 
 preds = test(tt_set, model, device)
 # print(preds)
-save_pred(preds, 'pred.csv')
+save_pred(preds, 'HW1/pred.csv')
