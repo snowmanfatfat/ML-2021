@@ -3,7 +3,7 @@ import pandas as pd
 import csv
 import matplotlib.pyplot as plt
 
-data_path="covid.train.csv"
+data_path="HW1/covid.train.csv"
 data=pd.read_csv(data_path)
 # print(data.head())
 print(data.info())
@@ -32,6 +32,7 @@ plt.show() # 從圖可看出不同地區的陽性比例差很多
 plt.scatter(data.loc[:,"tested_positive"], data.loc[:,"tested_positive.1"]) # 肉眼去看某兩個變數的相關性
 plt.show()
 
+print(data.iloc[:,41:].corr().sort_values("tested_positive.2",ascending=False).iloc[:,-1][1:15])
 feats=list(data.iloc[:,41:].corr().sort_values("tested_positive.2",ascending=False).iloc[:,-1][1:15].index)
 columns=pd.Series(list(data.columns))
 index=[data.iloc[:,1:].columns.get_loc(col) for col in feats]
@@ -43,3 +44,6 @@ for group in state: # 把每個state的days對tested_positive的圖都畫出來
     plt.plot(dataG["days"],dataG['tested_positive'],label=f'{group}')
 plt.legend(bbox_to_anchor=(1,1)) # anchor是錨，意思是圖例的框框要放在哪個位置，(0,0)是圖的最左下角，(1,1)是最右上角
 plt.show()
+
+# F-score(即F-test的值) = (correlation^2) / ((1-correlation^2)/(n-2))，n即資料筆數，本處為2700
+# 例如:tested_positive.1的correlation為0.991012，則 F-score = (0.991012^2) / ((1-0.991012^2)/(2700-2)) = 148068.55
